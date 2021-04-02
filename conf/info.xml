@@ -4,8 +4,8 @@
     <title xml:lang="en">FORM Widget</title>
     <description xml:lang="ko">게시판을 활용하여 폼(form) 형태 페이지를 출력하는 위젯입니다. 위젯을 통해 작성한 콘텐츠는 지정된 게시판으로 전송됩니다.</description>
     <description xml:lang="en">FORM Widget that sends a post written through a widget to a specified bulletin board.</description>
-    <version>1.2.1</version>
-    <date>2020-05-30</date>
+    <version>1.2.2</version>
+    <date>2021-04-02</date>
     <author email_address="cydemo@gmail.com" link="https://xetown.com/">
         <name xml:lang="ko">cydemo</name>
     </author>
