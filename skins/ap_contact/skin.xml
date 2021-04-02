@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skin version="0.2">
+    <title xml:lang="ko">문의 스킨</title>
+    <title xml:lang="en">Contact Skin</title>
+    <description xml:lang="ko">폼 위젯의 다단계 문의 스킨</description>
+    <description xml:lang="en">The Multi-Layered Contact Skin of FORM Widget</description>
+    <version>1.0.0</version>
+    <date>2020-03-23</date>
+    <link>https://xetown.com</link>
+
+    <author email_address="cydemo@gmail.com" link="https://xetown.com">
+        <name xml:lang="ko">cydemo</name>
+    </author>
+
+    <colorset>
+        <color name="default">
+            <title xml:lang="ko">기본색(#333333)</title>
+            <title xml:lang="en">Default(#333333)</title>
+        </color>
+        <color name="8b0000">
+            <title xml:lang="ko">빨간색(#8b0000)</title>
+            <title xml:lang="en">Red(#8b0000)</title>
+        </color>
+        <color name="ff8c00">
+            <title xml:lang="ko">주황색(#ff8c00)</title>
+            <title xml:lang="en">Orange(#ff8c00)</title>
+        </color>
+        <color name="cccc00">
+            <title xml:lang="ko">노란색(#cccc00)</title>
+            <title xml:lang="en">Yellow(#cccc00)</title>
+        </color>
+        <color name="336633">
+            <title xml:lang="ko">초록색(#336633)</title>
+            <title xml:lang="en">Green(#336633)</title>
+        </color>
+        <color name="6495ed">
+            <title xml:lang="ko">파란색(#6495ed)</title>
+            <title xml:lang="en">Blue(#6495ed)</title>
+        </color>
+        <color name="000080">
+            <title xml:lang="ko">남색(#000080)</title>
+            <title xml:lang="en">Navy(#000080)</title>
+        </color>
+        <color name="9400d3">
+            <title xml:lang="ko">보라색(#9400d3)</title>
+            <title xml:lang="en">Purple(#9400d3)</title>
+        </color>
+    </colorset>
+</skin>

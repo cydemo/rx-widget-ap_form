@@ -1,0 +1,75 @@
+.ap_input[rel="kr_zip"] .krZip {
+	margin: 12px auto;
+	text-align: left;
+	font-size: 16px;
+}
+.ap_input[rel="kr_zip"] .krZip input {
+	padding: 16px !important;
+	background: #ffffff;
+	font-size: 14px;
+}
+.ap_input[rel="kr_zip"] .krZip input[disabled] {
+	background: #f6f6f6;
+}
+.ap_input[rel="kr_zip"] .krZip .krzip-postcode-wrap,
+.ap_input[rel="kr_zip"] .krZip .krzip-address-wrap,
+.ap_input[rel="kr_zip"] .krZip .krzip-detailAddress-wrap {
+	margin: 0;
+	padding: 4px 0;
+	clear: both;
+}
+.ap_input[rel="kr_zip"] .krZip .krzip-postcode-wrap {
+	padding-top: 8px;
+}
+.ap_input[rel="kr_zip"] .krZip .krzip-postcode-wrap label,
+.ap_input[rel="kr_zip"] .krZip .krzip-address-wrap label,
+.ap_input[rel="kr_zip"] .krZip .krzip-detailAddress-wrap label {
+	position: relative;
+	top: 0;
+	left: 0;
+	min-width: unset;
+	font-size: 14px;
+}
+.ap_input[rel="kr_zip"] .krZip .krzip-postcode-wrap * {
+	display: inline-block;
+	vertical-align: middle;
+}
+.ap_input[rel="kr_zip"] .krZip .krzip-postcode-wrap label {
+	margin-right: 2px;
+	padding: 3px 0;
+	height: 26px;
+}
+.ap_input[rel="kr_zip"] .krZip .krzip-postcode-wrap input.krzip-postcode {
+	padding: 12px !important;
+	width: 80px;
+	min-width: 80px;
+	text-align: center;
+}
+.ap_input[rel="kr_zip"] .krZip .krzip-postcode-wrap input.krzip-search {
+	margin: 0;
+	width: auto;
+	padding: 0 16px !important;
+	background: #666666;
+	font-size: 12px;
+	color: #ffffff;
+	text-shadow: none;
+}
+.ap_input[rel="kr_zip"] .krZip .krzip-address-wrap {
+	height: 84px;
+	text-align: justify;
+}
+.ap_input[rel="kr_zip"] .krZip .krzip-address-wrap input.krzip-roadAddress {
+	margin-bottom: 4px;
+}
+.ap_input[rel="kr_zip"] .krZip .krzip-address-wrap input.krzip-jibunAddress,
+.ap_input[rel="kr_zip"] .krZip .krzip-address-wrap input.krzip-extraAddress {
+	display: inline-block;
+}
+.ap_input[rel="kr_zip"] .krZip .krzip-address-wrap input.krzip-jibunAddress{
+	width: 66.6%;
+	float: left;
+}
+.ap_input[rel="kr_zip"] .krZip .krzip-address-wrap input.krzip-extraAddress {
+	width: 33.3%;
+	float: right;
+}

@@ -1,0 +1,166 @@
+<include target="_setting.html" />
+
+<form class="ap_form" action="./" method="post" onsubmit="return sendMessage(jQuery(this));">
+	<input type="hidden" name="mid" value="{$wi->target_mid}" />
+	<input type="hidden" name="password" value="{$wi->rand_password}" cond="!$is_logged && $wi->use_password != 'O'" />
+	<input type="hidden" name="title" value="" cond="$wi->use_title=='Y'" />
+	<input type="hidden" name="content" value="" />
+	<input type="hidden" name="category_srl" value="{$wi->target_category_srls}"|cond="!$wi->has_category" />
+	<input type="hidden" name="category_title" value="{$wi->target_category_list[$wi->target_category_srls]}"|cond="!$wi->has_category" />
+	<input type="hidden" name="comment_status" value="ALLOW" cond="$wi->comment_status == 'A'" />
+	<input type="hidden" name="status" value="{$wi->status}" cond="$wi->status != 'O'" />
+	<input type="hidden" name="redirect" value="{$wi->redirect}" />
+	<input type="hidden" name="redirect_url" value="{$wi->redirect_url}" cond="$wi->redirect == 'U' && $wi->redirect_url" />
+	<input type="password" name="prevent_autofill" autocomplete="new-password" />
+
+	<!--// 연번 -->
+	{@ $i = 0;}
+
+	<!--// 첫 화면 -->
+	<div class="ap_section ap_welcome">
+		<div class="ap_section_wrapper">
+			<div class="ap_welcome_msg"></div>
+			<h2>{$lang->welcome}</h2>
+			<div class="ap_input sure">
+				<a href="#" class="ap_next">{$lang->sure}</a>
+				<div class="ap_cmd enter" cond="!$is_mobile">press <strong>Enter &crarr;</strong></div>
+			</div>
+		</div>
+		{@ $i++;}
+	</div>
+
+	<!--// 이름 -->
+	<div class="ap_section">
+		<div class="ap_section_wrapper">
+			<div class="ap_section_msg">
+				<span class="ap_idx">{$i}</span>
+				<h2 class="ap_var">{$lang->whatsname}</h2>
+				<sup class="ap_required">*</sup>
+			</div>
+			<div class="ap_input">
+				<input type="text" name="nick_name" value="" placeholder="{$lang->answer}" autocomplete="off" />
+				<a href="#" class="ap_next">OK <span>&#10003;</span></a>
+				<div class="ap_cmd enter" cond="!$is_mobile">press <strong>Enter &crarr;</strong></div>
+			</div>
+		</div>
+		{@ $i++;}
+	</div>
+
+	<!--// 이메일 -->
+	<div class="ap_section">
+		<div class="ap_section_wrapper">
+			<div class="ap_section_msg">
+				<span class="ap_idx">{$i}</span>
+				<h2 class="ap_var">{sprintf($lang->whatsemail, $logged_info->nick_name)}</h2>
+				<sup class="ap_required">*</sup>
+				<p class="ap_desc">{$lang->getback}</p>
+			</div>
+			<div class="ap_input">
+				<input type="email" name="email_address" value="" placeholder="somebody@example.com" autocomplete="off" />
+				<a href="#" class="ap_next">OK <span>&#10003;</span></a>
+				<div class="ap_cmd enter" cond="!$is_mobile">press <strong>Enter &crarr;</strong></div>
+			</div>
+		</div>
+		{@ $i++;}
+	</div>
+
+	<!--// 전화번호 -->
+	<div class="ap_section">
+		<div class="ap_section_wrapper">
+			<div class="ap_section_msg">
+				<span class="ap_idx">{$i}</span>
+				<h2 class="ap_var">{$lang->whatsphonenumber}</h2>
+				<sup class="ap_required">*</sup>
+			</div>
+			<div class="ap_input">
+				<input type="tel" name="phone_number" value="" placeholder="010-XXXX-XXXX" autocomplete="off" />
+				<a href="#" class="ap_next">OK <span>&#10003;</span></a>
+				<div class="ap_cmd enter" cond="!$is_mobile">press <strong>Enter &crarr;</strong></div>
+			</div>
+		</div>
+		{@ $i++;}
+	</div>
+
+	<!--// 제목 -->
+	<div class="ap_section">
+		<div class="ap_section_wrapper">
+			<div class="ap_section_msg">
+				<span class="ap_idx">{$i}</span>
+				<h2 class="ap_var">{$lang->whatstitle}</h2>
+				<sup class="ap_required">*</sup>
+				<p class="ap_desc">{$lang->makechoice}</p>
+			</div>
+			<div class="ap_input">
+				<div class="ap_radio">
+					<label>
+						<input type="radio" name="title" value="{$lang->workwithyou}" />
+						<span>{$lang->workwithyou}</span>
+					</label>
+					<label>
+						<input type="radio" name="title" value="{$lang->gotfeedback}" />
+						<span>{$lang->gotfeedback}</span>
+					</label>
+					<label>
+						<input type="radio" name="title" value="{$lang->lookadvice}" />
+						<span>{$lang->lookadvice}</span>
+					</label>
+					<label>
+						<input type="radio" name="title" value="{$lang->liketochat}" />
+						<span>{$lang->liketochat}</span>
+					</label>
+				</div>
+				<a href="#" class="ap_next">OK <span>&#10003;</span></a>
+				<div class="ap_cmd enter" cond="!$is_mobile">press <strong>Enter &crarr;</strong></div>
+			</div>
+		</div>
+		{@ $i++;}
+	</div>
+
+	<!--// 확장변수 -->
+	<include target="extra.html" cond="$wi->has_extra" />
+
+	<!--// 내용 -->
+	<div class="ap_section">
+		<div class="ap_section_wrapper">
+			<div class="ap_section_msg">
+				<span class="ap_idx">{$i}</span>
+				<h2 class="ap_var">{$lang->whatsmessage}</h2>
+				<sup class="ap_required">*</sup>
+			</div>
+			<div class="ap_input">
+				<textarea name="content" value="" rows="1" placeholder="{$lang->answer}" /></textarea>
+				<a href="#" class="ap_next">OK <span>&#10003;</span></a>
+				<div class="ap_cmd enter" cond="!$is_mobile">press <strong>Ctrl+Enter &crarr;</strong></div>
+			</div>
+		</div>
+		{@ $i++;}
+	</div>
+
+	<!--// 비밀번호 -->
+	<div class="ap_section">
+		<div class="ap_section_wrapper">
+			<div class="ap_section_msg">
+				<span class="ap_idx">{$i}</span>
+				<h2 class="ap_var">{$lang->password}</h2>
+				<sup class="ap_required">*</sup>
+			</div>
+			<div class="ap_input send">
+				<input type="password" name="password" value="" placeholder="{$lang->answer}" />
+				<a href="#" class="ap_next">OK <span>&#10003;</span></a>
+				<div class="ap_cmd enter" cond="!$is_mobile">press <strong>Enter &crarr;</strong></div>
+			</div>
+		</div>
+		{@ $i++;}
+	</div>
+
+	<!--// 네비게이션 -->
+	<div class="ap_navi">
+		<span>Powered by <strong>{$site_module_info->settings->title}</strong></span>
+		<button class="disabled">&#10094;</button>
+		<button>&#10095;</button>
+	</div>
+
+</form>
+
+<!--// 현재 페이지 처리시 결과 출력 부분 -->
+<include target="result.html" cond="$wi->redirect == 'N'" />

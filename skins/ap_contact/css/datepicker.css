@@ -1,0 +1,205 @@
+.ap_input[rel="date"] .hasDatepicker {
+	display: table;
+	margin: 12px auto;
+	font-size: 16px;
+}
+
+/* https://www.jqueryscript.net/demo/Clean-Date-Picker-Plugin-jQuery/ */
+
+.ap_input[rel="date"] .ui-datepicker {
+	display: inline-block !important;
+	padding: 24px;
+	border: 1px solid #33333340;
+	border-radius: unset;
+	width: 400px;
+	height: 350px;
+	vertical-align: middle;
+}
+.ap_input[rel="date"] .ui-datepicker .ui-datepicker-header {
+	background: transparent;
+	border: 0;
+}
+.ui-datepicker .ui-datepicker-title {
+	display: flex;
+	margin: 0 3em;
+}
+.ap_input[rel="date"] .ui-icon-circle-triangle-w,
+.ap_input[rel="date"] .ui-icon-circle-triangle-e {
+	-webkit-transform: scale(1.8);
+	-moz-transform: scale(1.8);
+	-ms-transform: scale(1.8);
+	-o-transform: scale(1.8);
+	transform: scale(1.8);
+	text-indent: 10000px;
+}
+.ap_input[rel="date"] .ui-icon-circle-triangle-w {
+    background-position: -96px 0;
+}
+.ap_input[rel="date"] .ui-icon-circle-triangle-e {
+    background-position: -32px 0;
+}
+.ap_input[rel="date"] .ui-datepicker .ui-datepicker-prev,
+.ap_input[rel="date"] .ui-datepicker .ui-datepicker-next {
+	top: 1px;
+	border-radius: 50%;
+	cursor: pointer;
+}
+.ap_input[rel="date"] .ui-datepicker .ui-datepicker-prev {
+	left: 1px;
+}
+.ap_input[rel="date"] .ui-datepicker .ui-datepicker-next {
+	right: 1px;
+}
+.ap_input[rel="date"] .ui-datepicker select.ui-datepicker-month,
+.ap_input[rel="date"] .ui-datepicker select.ui-datepicker-year {
+	flex: 1;
+	margin: 0;
+	border-radius: 2px;
+	outline: none;
+}
+.ap_input[rel="date"] .ui-datepicker select.ui-datepicker-month {
+	margin-left: 3%;
+}
+.ap_input[rel="date"] .ui-datepicker th {
+	font-weight: normal;
+}
+.ap_input[rel="date"] .ui-datepicker td span,
+.ap_input[rel="date"] .ui-datepicker td a {
+    padding: .4em;
+	width: 45px;
+    height: 36px;
+	line-height: 1.5;
+	text-align: center;
+}
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default,
+.ui-button,
+.ui-button.ui-state-disabled:hover,
+.ui-button.ui-state-disabled:active {
+    background: transparent;
+}
+.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus,
+.ui-button:hover,
+.ui-button:focus {
+	background: #f0f0f0;
+	border: 1px solid #33333380;
+}
+.ap_input[rel="date"] .ui-state-active,
+.ap_input[rel="date"] .ui-widget-content .ui-state-active,
+.ap_input[rel="date"] .ui-widget-header .ui-state-active,
+.ap_input[rel="date"] a.ui-button:active,
+.ap_input[rel="date"] .ui-button:active,
+.ap_input[rel="date"] .ui-button.ui-state-active:hover {
+	border: 1px solid #333333;
+	background: #33333380;
+	font-weight: normal;
+	color: #fff;
+}
+.ui-state-highlight,
+.ui-widget-content .ui-state-highlight,
+.ui-widget-header .ui-state-highlight {
+	background: #33333340;
+	border: 1px solid #333333;
+	color: #333333;
+}
+
+/* https://codepen.io/dbellotti/full/ZYgwYW/ */
+.ui-datepicker-ap-header {
+	display: inline-block;
+	background-color: #666666;
+	color: #ffffff;
+	text-align: center;
+	width: 176px;
+	height: 350px;
+	vertical-align: middle;
+}
+.ui-datepicker-ap-header .ui-datepicker-ap-day {
+	background-color: #333333;
+	font-size: 1rem;
+}
+.ui-datepicker-ap-header .ui-datepicker-ap-day.long {
+	display: block;
+	padding: 10px;
+}
+.ui-datepicker-ap-header .ui-datepicker-ap-day.short {
+	display: none;
+	padding: 0;
+}
+.ui-datepicker-ap-header .ui-datepicker-ap-date {
+	padding: 20px;
+}
+.ui-datepicker-ap-header .ui-datepicker-ap-date .ui-datepicker-ap-month,
+.ui-datepicker-ap-header .ui-datepicker-ap-date .ui-datepicker-ap-day-num,
+.ui-datepicker-ap-header .ui-datepicker-ap-date .ui-datepicker-ap-year {
+	padding: 5px;
+}
+.ui-datepicker-ap-header .ui-datepicker-ap-date .ui-datepicker-ap-month {
+	font-size: 2rem;
+	text-transform: uppercase;
+}
+.ui-datepicker-ap-header .ui-datepicker-ap-date .ui-datepicker-ap-day-num {
+	font-size: 4.5rem;
+}
+.ui-datepicker-ap-header .ui-datepicker-ap-date .ui-datepicker-ap-year {
+	font-size: 1.8rem;
+	font-weight: 200;
+	color: #ffffff80;
+}
+
+@media only screen and (max-width: 720px) {
+	.ui-datepicker-ap-header {
+		display: flex;
+		align-items: stretch;
+		background-color: #333333;
+		width: 100%;
+		height: auto;
+	}
+	.ui-datepicker-ap-header .ui-datepicker-ap-day {
+		background-color: #666666;
+	}
+	.ui-datepicker-ap-header .ui-datepicker-ap-day.long {
+		display: none;
+	}
+	.ui-datepicker-ap-header .ui-datepicker-ap-day.short {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.ui-datepicker-ap-header .ui-datepicker-ap-date {
+		display: flex;
+		align-items: center;
+		flex: 2;
+		padding: 0;
+	}
+	.ui-datepicker-ap-header .ui-datepicker-ap-date .ui-datepicker-ap-month {
+		flex: 2;
+		text-align: right;
+		font-size: 1.2rem;
+	}
+	.ui-datepicker-ap-header .ui-datepicker-ap-date .ui-datepicker-ap-day-num {
+		flex: 1;
+		font-size: 1.5rem;
+	}
+	.ui-datepicker-ap-header .ui-datepicker-ap-date .ui-datepicker-ap-year {
+		flex: 2;
+		text-align: left;
+		font-size: 1.2rem;
+	}
+	.ap_input[rel="date"] .ui-datepicker {
+		width: 100%;
+	}
+}
+
+@media only screen and (max-width: 480px) {
+	.ap_input[rel="date"] .ui-datepicker td span,
+	.ap_input[rel="date"] .ui-datepicker td a {
+		width: 36px;
+	}
+}

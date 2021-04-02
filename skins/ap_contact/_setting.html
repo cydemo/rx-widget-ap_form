@@ -1,0 +1,86 @@
+<load target="filter/insert.xml" />
+<load target="css/style.css" />
+<load target="js/main.js" />
+<load target="js/submit.js" />
+
+{@
+	if ( $lang_type == 'ko' ) :
+		$lang->welcome = '궁금하세요? 의견 있으세요? 남겨주세요!';
+		$lang->sure = '네, 기꺼이!';
+		$lang->whatsname = '이름이 어떻게 되세요?';
+		$lang->answer = '여기에 답변해주세요...';
+		$lang->whatsemail = '<span class="ap_name">%s</span>님, 자주 쓰는 이메일 주소를 알려주세요';
+		$lang->getback = '그쪽으로 연락드리겠습니다. 스팸이나 뉴스레터는 아니에요 :)';
+		$lang->whatsphonenumber = '연락을 위해 전화번호를 알려주시겠어요?';
+		$lang->whatstitle = '어떤 성격의 문의인가요?';
+		$lang->makechoice = '일종의 이메일 제목이라 생각하고 아래에서 골라보세요';
+		$lang->workwithyou = '여기서 일하고 싶습니다';
+		$lang->gotfeedback = '피드백 드릴 게 있습니다';
+		$lang->lookadvice = '조언을 구하고 싶은데요';
+		$lang->liketochat = '그냥 이야기가 좀 하고 싶어요';
+		$lang->whatsmessage = '마지막으로 메시지를 남겨주세요';
+	else :
+		$lang->welcome = 'Curious? Any thoughts? Leave it!';
+		$lang->sure = 'I sure do!';
+		$lang->whatsname = 'What\'s your name?';
+		$lang->answer = 'Type your answer here...';
+		$lang->whatsemail = 'What\'s the best email address for you, <span class="ap_name">%s</span>';
+		$lang->getback = 'We\'ll use this to get back to you. No spam or unexpected newsletters here';
+		$lang->whatsphonenumber = 'Could you give your phone number for contacting?';
+		$lang->whatstitle = 'What\'s your message about?';
+		$lang->makechoice = 'Think of this as like the subject field in an email. But already filled in for you';
+		$lang->workwithyou = 'I\'d like to work with you';
+		$lang->gotfeedback = 'I have some feedback';
+		$lang->lookadvice = 'I\'m looking for some advice';
+		$lang->liketochat = 'I\'d just like to chat';
+		$lang->whatsmessage = 'What\'s your message?';
+	endif;
+}
+
+{@
+	$is_mobile = Mobile::isFromMobilePhone();
+}
+
+<style cond="$colorset != 'default'">
+.ap_form {
+	background-color: #{$colorset}90;
+}
+.ap_section_wrapper .ap_section_msg.is_fixed {
+	background: #{$colorset}10;
+}
+.ap_section_wrapper .ap_idx {
+	color: #{$colorset};
+}
+.ap_section_wrapper .ap_required {
+	color: #{$colorset};
+}
+.ap_input .ap_next {
+	background: #{$colorset};
+}
+.ap_input .ap_next:hover {
+	background: #{$colorset};
+}
+.ap_radio label {
+	background: #{$colorset}10;
+	border: 1px solid #{$colorset};
+}
+.ap_radio label:hover,
+.ap_radio label.is_hover {
+	background: #{$colorset}20;
+}
+.ap_radio label.is_checked {
+	padding: 7px 19px;
+	background: #{$colorset}30;
+	border-width: 2px;
+}
+.ap_radio label.is_checked:before {
+	background: #{$colorset};
+	border: 1px solid #{$colorset};
+}
+.ap_radio label.is_checked:after {
+	color: #{$colorset};
+}
+.ap_navi button {
+	background: #{$colorset};
+}
+</style>
