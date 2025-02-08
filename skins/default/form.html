@@ -33,8 +33,8 @@
 		<h4 cond="$wi->international" class="required">{$lang->phone}</h4>
 		<div class="ap_item ap_basic<!--@if($wi->international)--> rx_phone_country {$wi->default_country}<!--@end-->" rel="phone_number" disabled="disabled"|cond="$wi->phone_number">
 			{$wi->countries}
-			<label for="phone_number" cond="!$wi->international">{$lang->phone}</label>
-			<input type="tel" name="phone_number" class="use_international"|cond="$wi->use_international" value="{$wi->phone_number}" required="required"|cond="$wi->use_phone != 'O'" disabled="disabled"|cond="$wi->phone_number" />
+			<label for="phone_number" cond="!$wi->international" class="required">{$lang->phone}</label>
+			<input type="tel" name="phone_number" class="use_international"|cond="$wi->international" value="{$wi->phone_number}" required="required"|cond="$wi->use_phone != 'O'" disabled="disabled"|cond="$wi->phone_number" />
 		</div>
 	</fieldset>
 
