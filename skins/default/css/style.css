@@ -367,13 +367,11 @@
 	float: right;
 }
 
-.ap_form .ap_item[rel="phone_number"] input[type="tel"] {
+.ap_form .ap_item[rel="phone_number"] input.use_international[type="tel"] {
+	margin-left: 54px;
 	padding-left: 12px !important;
+	width: calc(100% - 54px);
 }
-	.ap_form .ap_item[rel="phone_number"] input.use_international[type="tel"] {
-		margin-left: 54px;
-		width: calc(100% - 54px);
-	}
 .ap_form .ap_item[rel="password"] .ap_eye {
 	position: absolute; top: 50%; right: 16px; transform: translateY(-50%);
 	display: none; z-index: 1;
