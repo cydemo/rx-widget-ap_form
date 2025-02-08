@@ -1,12 +1,13 @@
 <include target="_setting.html" />
 
-<form class="ap_form floating-labels<!--@if($is_rx)--> rx_ajax<!--@end-->" action="./" method="post" onsubmit="return sendMessage(jQuery(this));">
+<form class="ap_form floating-labels rx_ajax" action="./" method="post" onsubmit="return sendMessage(jQuery(this));">
+	<input type="hidden" name="act" value="procBoardInsertDocument" />
 	<input type="hidden" name="mid" value="{$wi->target_mid}" />
 	<input type="hidden" name="password" value="{$wi->rand_password}" cond="!$is_logged && $wi->use_password != 'O'" />
 	<input type="hidden" name="title" value="" cond="$wi->use_title=='Y'" />
 	<input type="hidden" name="content" value="" />
 	<input type="hidden" name="category_srl" value="{$wi->target_category_srls}"|cond="!$wi->has_category" />
-	<input type="hidden" name="category_title" value="{$wi->target_category_list[$wi->target_category_srls]}"|cond="!$wi->has_category" />
+	<input type="hidden" name="category_title" value="{$wi->target_category_list[$wi->target_category_srls]}"|cond="!empty($wi->target_category_list) && !$wi->has_category" />
 	<input type="hidden" name="comment_status" value="ALLOW" cond="$wi->comment_status == 'A'" />
 	<input type="hidden" name="status" value="{$wi->status}" cond="$wi->status != 'O'" />
 	<input type="hidden" name="redirect" value="{$wi->redirect}" />
@@ -18,20 +19,20 @@
 
 		<!--// 이름 -->
 		<div class="ap_item ap_basic" rel="nick_name">
-			<label for="nick_name">{$lang->name}</label>
+			<label for="nick_name" class="required">{$lang->name}</label>
 			<input type="text" name="nick_name" value="{$logged_info->nick_name}" required="required"|cond="!$is_logged" disabled="disabled"|cond="$is_logged" />
 		</div>
 
 		<!--// 이메일 -->
 		<div class="ap_item ap_basic" rel="email">
-			<label for="email_address">{$lang->email}</label>
+			<label for="email_address" class="required">{$lang->email}</label>
 			<input type="email" name="email_address" value="{$logged_info->email_address}" required="required"|cond="!$is_logged && $wi->use_email != 'O'" disabled="disabled"|cond="$is_logged" />
 		</div>
 
 		<!--// 전화번호 -->
-		<h4 cond="$wi->international">{$lang->phone}</h4>
+		<h4 cond="$wi->international" class="required">{$lang->phone}</h4>
 		<div class="ap_item ap_basic<!--@if($wi->international)--> rx_phone_country {$wi->default_country}<!--@end-->" rel="phone_number" disabled="disabled"|cond="$wi->phone_number">
-			{$wi->international ? $wi->countries : '';}
+			{$wi->countries}
 			<label for="phone_number" cond="!$wi->international">{$lang->phone}</label>
 			<input type="tel" name="phone_number" class="use_international"|cond="$wi->use_international" value="{$wi->phone_number}" required="required"|cond="$wi->use_phone != 'O'" disabled="disabled"|cond="$wi->phone_number" />
 		</div>
@@ -41,11 +42,11 @@
 	<fieldset class="ap_extra_info" cond="$wi->has_extra">
 		<legend>Extra Info</legend>
 
-		{@ $is_fixed = array('tel', 'checkbox', 'radio', 'kr_zip'); }
+		{@ $is_fixed = array('tel', 'tel_v2', 'tel_intl', 'tel_intl_v2', 'checkbox', 'radio', 'date', 'time', 'kr_zip', 'file'); }
 		<block loop="$wi->target_extra_list => $key, $val">
-		<h4 cond="in_array($val->type, $is_fixed)">{$val->name}</h4>
+		<h4 cond="in_array($val->type, $is_fixed)" class="required"|cond="$val->is_required === 'Y'">{$val->name}</h4>
 		<div class="ap_item ap_extra<!--@if($val->is_required == 'Y')--> is_required<!--@end-->" rel="{$val->type}" data-idx="{$val->idx}">
-			<label for="extra_vars{$val->idx}" cond="!in_array($val->type, $is_fixed)">{$val->name}</label>
+			<label for="extra_vars{$val->idx}" cond="!in_array($val->type, $is_fixed)" class="required"|cond="$val->is_required === 'Y'">{$val->name}</label>
 			{$val->getFormHTML()}
 		</div>
 		</block>
@@ -57,13 +58,13 @@
 
 		<!--// 제목 -->
 		<div class="ap_item ap_message" rel="title" cond="$wi->use_title != 'Y'">
-			<label for="title">{$lang->title}</label>
+			<label for="title" class="required">{$lang->title}</label>
 			<input type="text" name="title" id="ap_title" required />
 		</div>
 
 		<!--// 분류 -->
 		<div class="ap_item ap_message" rel="category" cond="$wi->has_category">
-			<label for="category">{$lang->category}</label>
+			<label for="category" class="required">{$lang->category}</label>
 			<select name="category" required>
 				<option value=""></option>
 				<option loop="$wi->target_category_list => $key, $val" value="{$key}">{$val}</option>
@@ -72,13 +73,13 @@
 
 		<!--// 내용 -->
 		<div class="ap_item ap_message" rel="content" cond="$wi->use_content != 'Y'">
-			<label for="message">{$lang->content}</label>
-			<textarea name="message" required></textarea>
+			<label for="message" class="required">{$lang->content}</label>
+			<textarea name="message" class="rx_ev_textarea" rows="8" cols="42" required></textarea>
 		</div>
 
 		<!--// 비밀번호 -->
 		<div class="ap_item ap_message" rel="password" cond="!$is_logged && $wi->use_password == 'O'">
-			<label for="password">{$lang->password}</label>
+			<label for="password" class="required">{$lang->password}</label>
 			<input type="password" name="password" required />
 		</div>
 	</fieldset>
@@ -89,7 +90,7 @@
 		<ul class="ap_section ap_privacy" cond="$wi->privacy != 'N' && count($wi->privacy_title_arr)">
 			<li loop="$wi->privacy_title_arr => $key, $val" cond="!empty($val)">
 				<input type="checkbox" name="privacy{$key+1}" value="" required />
-				<label for="privacy{$key+1}">{$val}</label>
+				<label for="privacy{$key+1}">{$val}</label><sup>•</sup>
 				<a href="#open" class="ap_popup_trigger"> ({$lang->content} {$lang->cmd_view})</a>
 				<div class="ap_privacy_content">
 					<div class="ap_privacy_title_container">
@@ -113,6 +114,10 @@
 				</div>
 			</li>
 		</ul>
+
+		<div class="document_captcha" cond="$wi->use_recaptcha !== 'N' && SpamfilterModel::isCaptchaEnabled('document')">
+			{SpamfilterModel::getCaptcha('document')|noescape}
+		</div>
 
 		<!--// 댓글 허용 여부 -->
 		<div class="ap_section" cond="$wi->comment_status == 'O'">

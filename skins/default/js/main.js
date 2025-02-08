@@ -18,33 +18,33 @@ jQuery(document).ready(function($) {
 		}
 		if ( $('.ap_extra[rel="tel"]').length > 0 )
 		{
-			$('.ap_extra[rel="tel"]').children('input.tel').attr('type', 'number');
 			$('.ap_extra[rel="tel"]').each(function() {
 				setCustomValidityForPhoneNumber($(this));
 			});
 		}
-		if ( $('.ap_extra[rel="select"]').length > 0 )
+		if ( $('.ap_form select').length > 0 )
 		{
-			$('.ap_extra[rel="select"]').children('select.select').prepend('<option value="" /');
-			$('.ap_extra[rel="select"]').children('select.select').val('').trigger('change');
+			$('.ap_form select').each(function() {
+				if ( $(this).children('option').eq(0).val() === '' ) {
+					$(this).children('option').eq(0).remove();
+				}
+
+				if ( $(this).next('input').attr('type') === 'tel' ) {
+					$(this).prepend('<option value="">국제번호</option>');
+				} else {
+					$(this).prepend('<option value=""></option>');
+				}
+
+				if ( $(this).attr('name') !== 'phone_country' ) {
+					$(this).val('').trigger('change');
+				}
+			});
 		}
 		if ( $('.ap_extra[rel="date"]').length > 0 )
 		{
 			$('.ap_extra[rel="date"]').children('input.date').attr('maxlength', 10).attr('autocomplete', 'off');
 			$('.ap_extra[rel="date"]').each(function() {
 				setCustomValidityForDatePicker($(this));
-				$(this).children('input.date').datepicker( {
-					onSelect: function(dateText) {
-						var date = dateText.replace(/\-/g, '');
-						$(this).val(dateText);
-						$(this).prev('input[type="hidden"]').val(date);
-						this.setCustomValidity('');
-						if ( !$(this).parent().children('label').hasClass('float') )
-						{
-							$(this).parent().children('label').addClass('float');
-						}
-					}
-				});
 			});
 		}
 		if ( $('.ap_extra[rel="kr_zip"]').length > 0 )
@@ -54,7 +54,7 @@ jQuery(document).ready(function($) {
 	}
 	if ( $('.ap_item[rel="password"]').length > 0 )
 	{
-		$('.ap_item[rel="password"]').children('input').attr('autocomplete', 'new-password').after('<div class="ap_eye">');
+		$('.ap_item[rel="password"]').children('input').attr('autocomplete', 'new-password').after('<i class="ap_eye xi xi-eye"></i>');
 	}
 
 
@@ -64,15 +64,15 @@ jQuery(document).ready(function($) {
 	{
 		$('.ap_extra.is_required').each(function() {
 			var rel = $(this).attr('rel');
-			if ( rel == 'checkbox' )
+			if ( rel === 'checkbox' )
 			{
-				if ( $(this).find('input[type="checkbox"]').length == 1 )
+				if ( $(this).find('input[type="checkbox"]').length === 1 )
 				{
 					$(this).find('input[type="checkbox"]').attr('required', true);
 				}
 				else
 				{
-					var error = ( xe.current_lang == 'ko' ) ? '1개 이상의 항목을 선택하세요.' : 'At least one checkbox must be selected.';
+					var error = ( xe.current_lang === 'ko' ) ? '1개 이상의 항목을 선택하세요.' : 'At least one checkbox must be selected.';
 					if ( $(this).find('input[type="checkbox"]:checked').length < 1 )
 					{
 						$(this).find('input[type="checkbox"]')[0].setCustomValidity(error);
@@ -90,18 +90,18 @@ jQuery(document).ready(function($) {
 					});
 				}
 			}
-			else if ( rel == 'radio' )
+			else if ( rel === 'radio' )
 			{
 				$(this).find('input[type="radio"]').first().attr('required', true);
 			}
-			else if ( rel == 'date' )
+			else if ( rel === 'date' )
 			{
 				$(this).children('input.date').attr('required', true);
 			}
-			else if ( rel == 'kr_zip' )
+			else if ( rel === 'kr_zip' )
 			{
-				var error = ( xe.current_lang == 'ko' ) ? '우편번호를 검색하세요.' : 'Search for Korean zip-code.';
-				if ( $(this).find('input.krzip-hidden-postcode').val() == '' )
+				var error = ( xe.current_lang === 'ko' ) ? '우편번호를 검색하세요.' : 'Search for Korean zip-code.';
+				if ( $(this).find('input.krzip-hidden-postcode').val() === '' )
 				{
 					$(this).find('input.krzip-postcode')[0].setCustomValidity(error);
 				}
@@ -165,11 +165,11 @@ jQuery(document).ready(function($) {
 
 	$('.ap_extra[rel="date"] input.date').on('input', function() {
 		var label = $(this).parent().children('label');
-		if ( $(this).val() != '' && !label.hasClass('float') )
+		if ( $(this).val() !== '' && !label.hasClass('float') )
 		{
 			label.addClass('float');
 		}
-		else if ( $(this).val() == '' && label.hasClass('float') )
+		else if ( $(this).val() === '' && label.hasClass('float') )
 		{
 			label.removeClass('float');
 		}
@@ -188,7 +188,7 @@ jQuery(document).ready(function($) {
 		{
 			eye.show();
 		}
-		if ( input.val() == '' )
+		if ( input.val() === '' )
 		{
 			eye.hide();
 		}
@@ -196,21 +196,22 @@ jQuery(document).ready(function($) {
 	$('.ap_eye').on('click', function() {
 		var eye = $(this);
 		var input = eye.prev('input');
-		eye.toggleClass('open');
-		if ( input.attr('type') == 'password' )
+		if ( input.attr('type') === 'password' )
 		{
 			input.attr('type', 'text');
+			eye.removeClass('xi-eye').addClass('xi-eye-slash');
 		}
 		else
 		{
 			input.attr('type', 'password');
+			eye.removeClass('xi-eye-slash').addClass('xi-eye');
 		}
 	});
 
 	$('.ap_section label').on('click', function() {
 		var input = $(this).prev();
 		var type = input.attr('type');
-		if ( type == 'checkbox' )
+		if ( type === 'checkbox' )
 		{
 			if ( input.prop('checked') )
 			{
@@ -221,7 +222,7 @@ jQuery(document).ready(function($) {
 				input.prop('checked', true);
 			}
 		}
-		else if ( type == 'radio' )
+		else if ( type === 'radio' )
 		{
 			if ( input.prop('checked') )
 			{
@@ -349,7 +350,7 @@ jQuery(document).ready(function($) {
 
 	function checkVal(inputField)
 	{
-		if ( inputField.val() == '' )
+		if ( inputField.val() === '' )
 		{
 			inputField.prev('label').removeClass('float')
 		}
@@ -361,9 +362,9 @@ jQuery(document).ready(function($) {
 
 	function setCustomValidityForPhoneNumber(obj)
 	{
-		var error_0 = ( xe.current_lang == 'ko' ) ? '전화번호를 입력하세요.' : 'Enter the phone number.';
+		var error_0 = ( xe.current_lang === 'ko' ) ? '전화번호를 입력하세요.' : 'Enter the phone number.';
 		var error_1 = ( !obj.hasClass('is_required') ) ? '' : error_0;
-		var error_2 = ( xe.current_lang == 'ko' ) ? '전화번호 형식이어야 합니다.' : 'It must be in Korean phone number format.';
+		var error_2 = ( xe.current_lang === 'ko' ) ? '전화번호 형식이어야 합니다.' : 'It must be in Korean phone number format.';
 		var ref = [0, 0, 0];
 
 		obj.children('input.tel').each(function() {
@@ -380,14 +381,14 @@ jQuery(document).ready(function($) {
 			else
 			{
 				setCustomValidityForPhoneNumberDivided($(this), error_1, error_2);
-				ref[$(this).index()] = ( $(this).val() != '' ) ? 1 : 0;
+				ref[$(this).index()] = ( $(this).val() !== '' ) ? 1 : 0;
 			}
 		});
 
 		if ( ( !obj.hasClass('is_required') ) )
 		{
 			obj.children('input.tel').on('change', function() {
-				if ( $.inArray( 1, ref ) == -1 )
+				if ( $.inArray( 1, ref ) === -1 )
 				{
 					obj.children('input.tel').each(function() {
 						this.setCustomValidity(error_1);
@@ -396,7 +397,7 @@ jQuery(document).ready(function($) {
 				else
 				{
 					$.each(ref, function(i, v) {
-						if ( v == 0 )
+						if ( v === 0 )
 						{
 							obj.children('input.tel')[i].setCustomValidity(error_0);
 						}
@@ -412,14 +413,14 @@ jQuery(document).ready(function($) {
 
 	function setCustomValidityForPhoneNumberDivided(obj, error_1, error_2)
 	{
-		if ( obj.index()%3 == 0 )
+		if ( obj.index()%3 === 0 )
 		{
 			if ( obj.val().charAt(0) != '0' )
 			{
 				obj.val('');
 				obj[0].setCustomValidity(error_1);
 			}
-			if ( obj.val().length == 1 )
+			if ( obj.val().length === 1 )
 			{
 				obj[0].setCustomValidity(error_2);
 			}
@@ -444,7 +445,7 @@ jQuery(document).ready(function($) {
 				}
 			}
 		}
-		else if ( obj.index()%3 == 1 )
+		else if ( obj.index()%3 === 1 )
 		{
 			if ( obj.val().length < 3 )
 			{
@@ -459,7 +460,7 @@ jQuery(document).ready(function($) {
 				}
 			}
 		}
-		else if ( obj.index()%3 == 2 )
+		else if ( obj.index()%3 === 2 )
 		{
 			if ( obj.val().length < 4 )
 			{
@@ -478,9 +479,9 @@ jQuery(document).ready(function($) {
 
 	function setCustomValidityForDatePicker(obj)
 	{
-		var error_0 = ( xe.current_lang == 'ko' ) ? '날짜를 선택하세요.' : 'Select a date.';
+		var error_0 = ( xe.current_lang === 'ko' ) ? '날짜를 선택하세요.' : 'Select a date.';
 		var error_1 = ( !obj.hasClass('is_required') ) ? '' : error_0;
-		var error_2 = ( xe.current_lang == 'ko' ) ? 'yyyy-mm-dd 형식이어야 합니다.' : 'It must be in the format "yyyy-mm-dd".';
+		var error_2 = ( xe.current_lang === 'ko' ) ? 'yyyy-mm-dd 형식이어야 합니다.' : 'It must be in the format "yyyy-mm-dd".';
 		var date_format = /[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/;
 		var yyyy, mm, dd;
 
@@ -491,7 +492,7 @@ jQuery(document).ready(function($) {
 
 			$(this).prev().val(this.value.replace(/[^0-9]/g, ''));
 
-			if ( this.value == '' )
+			if ( this.value === '' )
 			{
 				this.setCustomValidity(error_1);
 			}
@@ -506,13 +507,13 @@ jQuery(document).ready(function($) {
 					yyyy = Number(this.value.split('-')[0]);
 					mm = Number(this.value.split('-')[1]);
 					dd = Number(this.value.split('-')[2]);
-					if ( mm == 02 )
+					if ( mm === 02 )
 					{
-						if ( dd == 30 || dd == 31 )
+						if ( dd === 30 || dd === 31 )
 						{
 							this.setCustomValidity(error_2);
 						}
-						else if ( dd == 29 && yyyy%4 != 0 )
+						else if ( dd === 29 && yyyy%4 != 0 )
 						{
 							this.setCustomValidity(error_2);
 						}
@@ -521,7 +522,7 @@ jQuery(document).ready(function($) {
 							this.setCustomValidity('');
 						}
 					}
-					else if ( ( mm == 04 || mm == 06 || mm == 09 || mm == 11 ) && dd == 31 )
+					else if ( ( mm === 04 || mm === 06 || mm === 09 || mm === 11 ) && dd === 31 )
 					{
 						this.setCustomValidity(error_2);
 					}
@@ -546,11 +547,11 @@ jQuery(document).ready(function($) {
 	{
 		var value = input.val();
 		setInterval(function() {
-			if ( input.val() != value )
+			if ( input.val() !== value )
 			{
-				if ( input.val() == '' )
+				if ( input.val() === '' )
 				{
-					var error = ( xe.current_lang == 'ko' ) ? '우편번호를 검색하세요.' : 'Search for Korean zip-code.';
+					var error = ( xe.current_lang === 'ko' ) ? '우편번호를 검색하세요.' : 'Search for Korean zip-code.';
 					input[0].setCustomValidity(error);
 				}
 				else
@@ -568,7 +569,7 @@ jQuery(document).ready(function($) {
 		var DataFormat;
 		var RegNum;
 		date = date.replace(/[^0-9]/g, '');
-		if ( date == '' || date == null || date.length < 5 )
+		if ( date === '' || date === null || date.length < 5 )
 		{
 			obj.value = date;
 			return;

@@ -2,7 +2,7 @@
 
 	<!--// 헤더 : 전송 확인 메시지 -->
 	<header class="is_blink">
-		<div class="ap_image_wrapper"></div>
+		<div class="ap_image_wrapper"><i class="xi xi-paper-plane"></i></div>
 		<div class="ap_text_wrapper">
 			<h3>{$lang->well_reveived}</h3>
 			<p>{$lang->msg_reveived}</p>
@@ -58,6 +58,6 @@
 
 	<!--// 푸터 : 게시판 바로가기 버튼 -->
 	<footer>
-		<div class="ap_result_footer"><a href="{getUrl('', 'mid', $wi->target_mid)}">{$lang->cmd_to_board}</a></div>
+		<div class="ap_result_footer"><a href="{getUrl('', 'mid', $wi->target_mid)}">{$lang->cmd_to_board} <i class="xi xi-angle-double-right"></i></a></div>
 	</footer>
 </div>

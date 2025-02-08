@@ -1,7 +1,6 @@
 /* Form */
 .ap_form {
 	color: #2b3e51;
-	background-color: #fff;
 }
 .ap_form::after {
 	clear: both;
@@ -35,6 +34,7 @@
 	/* form element wrapper */
 	position: relative;
 	margin: 32px 0;
+	clear: both;
 }
 .ap_form legend + div {
 	/* reduce margin-top for first form element after the legend */
@@ -61,20 +61,30 @@
 }
 .ap_form label,
 .ap_form h4 {
-	font-size: 14px;
-	font-weight: normal;
-	color: #94aab0;
+	position: relative;
+	font-size: 14px; font-weight: normal; color: #94aab0;
 }
+	.ap_form label.required:after,
+	.ap_form h4.required:after {
+		content: "•";
+		position: absolute; top: -6px; right: -6px;
+		color: #c66;
+	}
 .ap_form h4 {
+	display: inline-block;
 	margin: 0;
 }
-.ap_form h4 + div {
-	/* reduce margin-top/bottom for a gap between form elements */
-	margin: 2px 0 20px;
+	.ap_form h4 + div {
+		/* reduce margin-top/bottom for a gap between form elements */
+		margin: 2px 0 20px;
+	}
+.ap_form sup {
+	color: #c66;
 }
 .ap_form input,
 .ap_form select,
 .ap_form textarea {
+	position: relative;
 	font-size: 14px;
 	color: #2b3e51;
 }
@@ -84,6 +94,9 @@
 .ap_form input[type="tel"],
 .ap_form input[type="number"],
 .ap_form input[type="password"],
+.ap_form input[type="date"],
+.ap_form input[type="time"],
+.ap_form input[type="file"],
 .ap_form select,
 .ap_form textarea,
 .ap_form legend {
@@ -95,12 +108,26 @@
 	-o-appearance: none;
 	appearance: none;
 }
+	.ap_form input[type="date"],
+	.ap_form input[type="time"] {
+		width: 192px;
+	}
+	.ap_form input[type="file"],
+	.ap_form select {
+		width: 320px;
+	}
+	.ap_form input[type="file"] {
+		font-size: 14px;
+	}
 .ap_form input[type="text"],
 .ap_form input[type="url"],
 .ap_form input[type="email"],
 .ap_form input[type="tel"],
 .ap_form input[type="number"],
 .ap_form input[type="password"],
+.ap_form input[type="date"],
+.ap_form input[type="time"],
+.ap_form input[type="file"],
 .ap_form select,
 .ap_form textarea {
 	/* general style for input elements */
@@ -110,26 +137,52 @@
 	border-radius: .25em;
 	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.08);
 }
+	.ap_form select {
+		margin: 8px 0;
+		padding-left: 54px;
+		box-shadow: 0 1px 3px rgba(0,0,0,.08);
+		cursor: pointer;
+	}
+	.ap_form textarea {
+		min-height: 200px;
+		resize: vertical;
+		overflow: auto;
+	}
+	.ap_form label {
+		pointer-events: none;
+		z-index: 1;
+	}
+		.ap_form .ap_item input,
+		.ap_form .ap_item textarea {
+			padding-left: 54px !important;
+		}
+		.ap_form select.phone_country,
+		.ap_form .ap_item:not([rel="country"]) select.rx_ev_select_country {
+			width: calc(320px - 54px);
+			margin: 8px 0 8px 54px;
+			padding-left: 12px;
+		}
+		.ap_form .ap_item[rel="checkbox"] ul,
+		.ap_form .ap_item[rel="radio"] ul {
+			padding-left: 60px;
+		}
+		.ap_form input[type="checkbox"] + label,
+		.ap_form input[type="radio"] + label {
+			pointer-events: auto;
+		}
 .ap_form input[type="text"]:focus,
 .ap_form input[type="url"]:focus,
 .ap_form input[type="email"]:focus,
 .ap_form input[type="tel"]:focus,
 .ap_form input[type="number"]:focus,
 .ap_form input[type="password"]:focus,
+.ap_form input[type="date"]:focus,
+.ap_form input[type="time"]:focus,
 .ap_form select:focus,
 .ap_form textarea:focus {
 	outline: none;
 	border-color: #2c97de;
 	box-shadow: 0 0 5px rgba(44, 151, 222, 0.2);
-}
-.ap_form select {
-	box-shadow: 0 1px 3px rgba(0,0,0,.08);
-    cursor: pointer;
-}
-.ap_form textarea {
-	min-height: 200px;
-	resize: vertical;
-	overflow: auto;
 }
 .ap_form input[type=radio],
 .ap_form input[type=checkbox] {
@@ -203,45 +256,43 @@
 }
 
 /* ExtraKeys Info */
-.ap_form .ap_extra[rel="tel"] {
+.ap_form .ap_extra[rel="tel"],
+.ap_form .ap_extra[rel="tel_v2"],
+.ap_form .ap_extra[rel="tel_intl"],
+.ap_form .ap_extra[rel="tel_intl_v2"] {
 	text-align: center;
 	clear: both;
 }
-.ap_form .ap_extra[rel="tel"]:after {
-	content: '';
-	display: table;
-	clear: both;
-}
-.ap_form .ap_extra[rel="tel"] input.tel {
+.ap_form .ap_extra[rel="tel"] input[type="tel"],
+.ap_form .ap_extra[rel="tel_intl"] input[type="tel"] {
 	display: inline-block;
 	padding-left: 12px !important;
-	width: calc(33.1% - 18px);
+	width: calc(33.1% - 20px);
 }
-.ap_form .ap_extra[rel="tel"] input.tel:nth-child(1) {
+.ap_form .ap_extra[rel="tel_v2"] input[type="tel"],
+.ap_form .ap_extra[rel="tel_intl_v2"] input[type="tel"] {
+	display: inline-block;
+	padding-left: 12px !important;
+	width: calc(100% - 54px);
+}
+.ap_form .ap_extra[rel="tel"] input[type="tel"]:nth-of-type(1),
+.ap_form .ap_extra[rel="tel_intl"] input[type="tel"]:nth-of-type(1) {
 	margin-left: 54px;
 	float: left;
 }
-.ap_form .ap_extra[rel="tel"] input.tel:nth-child(3) {
+.ap_form .ap_extra[rel="tel_v2"] input[type="tel"]:nth-of-type(1),
+.ap_form .ap_extra[rel="tel_intl_v2"] input[type="tel"]:nth-of-type(1) {
+	margin-left: 54px;
+}
+.ap_form .ap_extra[rel="tel"] input[type="tel"]:nth-of-type(3),
+.ap_form .ap_extra[rel="tel_intl"] input[type="tel"]:nth-of-type(3) {
 	float: right;
 }
-.ap_form .ap_extra[rel="select"]::after,
-.ap_form .ap_message[rel="category"]::after {
-	content: '';
-	position: absolute;
-	z-index: 1;
-	right: 28px;
-	top: 24px;
-	margin-top: -8px;
-	display: block;
-	width: 16px;
-	height: 16px;
-	background: url("../img/ap_icon-arrow.svg") no-repeat center center;
-	pointer-events: none;
-}
-.ap_form .ap_extra[rel="date"] input[type="button"] {
+.ap_form .ap_extra[rel="date"] [type="button"],
+.ap_form .ap_extra[rel="time"] [type="button"] {
 	position: absolute;
 	top: 0;
-	right: 0;
+	left: 188px;
 	margin: 8px;
 	padding: 0 16px !important;
 	height: 30px !important;
@@ -253,6 +304,7 @@
 }
 .ap_form .ap_extra[rel="kr_zip"] .krZip {
 	margin: 0;
+	padding-left: 54px !important;
 }
 .ap_form .ap_extra[rel="kr_zip"] .krZip input {
 	padding: 16px !important;
@@ -279,10 +331,10 @@
 }
 .ap_form .ap_extra[rel="kr_zip"] .krZip .krzip-postcode-wrap label {
 	display: inline-block;
+	transform: translateY(0);
 	margin-right: 2px;
 	padding: 3px 0;
 	height: 26px;
-	vertical-align: bottom;
 }
 .ap_form .ap_extra[rel="kr_zip"] .krZip .krzip-postcode-wrap input.krzip-postcode {
 	display: inline-block;
@@ -314,15 +366,16 @@
 	width: 33.3%;
 	float: right;
 }
+
+.ap_form .ap_item[rel="phone_number"] input[type="tel"] {
+	margin-left: 54px;
+	padding-left: 12px !important;
+	width: calc(100% - 54px);
+}
 .ap_form .ap_item[rel="password"] .ap_eye {
-	position: absolute;
-	display: none;
-	z-index: 1;
-	right: 32px;
-	top: 24px;
-	margin-top: -11px;
-	width: 20px;
-	height: 20px;
+	position: absolute; top: 50%; right: 16px; transform: translateY(-50%);
+	display: none; z-index: 1;
+	font-size: 20px; color: #cfd9db;
 	cursor: pointer;
 }
 
@@ -386,7 +439,7 @@
 	-webkit-transition: opacity .3s 0s,visibility 0s 0s;
 	-moz-transition: opacity .3s 0s,visibility 0s 0s;
 	transition: opacity .3s 0s,visibility 0s 0s;
-	z-index: 1;
+	z-index: 2;
 }
 .ap_form .ap_submit_info .ap_privacy .ap_privacy_title_container {
 	position: relative;
@@ -465,7 +518,7 @@
 }
 .ap_form .ap_submit_info .g-recaptcha {
 	display: table;
-	margin: 0 auto 16px;
+	margin: 0 auto;
 }
 .ap_form .ap_submit_info input[type="submit"] {
 	/* button style */
@@ -512,7 +565,6 @@
 		font-size: 18px;
 	}
 	.ap_form input,
-	.ap_form select,
 	.ap_form textarea,
 	.ap_form label {
 		font-size: 16px;
@@ -574,204 +626,103 @@
 }
 
 /* Custom icons */
-.ap_form .ap_item input,
-.ap_form .ap_item select,
-.ap_form .ap_item textarea {
-	padding-left: 54px !important;
-}
-.ap_form input[type=radio] + label::after {
-    background-image: url("../img/ap_icon-radio.svg");
-}
+.ap_form input[type=radio] + label::after,
 .ap_form input[type=checkbox] + label::after {
-    background-image: url("../img/ap_icon-check.svg");
+	content: "\e6e0";
+	font-family: "xeicon"; color: #fff;
+	line-height: 1em;
 }
 
-.ap_form .ap_basic input[name="nick_name"] {
-	background: url("../img/ap_icon-user.svg") no-repeat 16px center;
-	background-size: 24px;
+.ap_form .ap_item:before,
+.ap_form .ap_item:after {
+	position: absolute; top: 50%; left: 15px; transform: translateY(-50%);
+	font-family: "xeicon"; font-size: 24px; color: rgba(148, 170, 176, 0.6);
+	z-index: 1; pointer-events: none;
 }
-.ap_form .ap_basic input[name="nick_name"][required] {
-	background: url("../img/ap_icon-user.svg") no-repeat 16px center, url("../img/ap_required.svg") no-repeat top right;
-	background-size: 24px;
+.ap_form .ap_item:has(select):after {
+	content: "\e619";
+	top: 14px; left: calc(320px - 32px);transform: scaleX(1.2);
+	font-size: 16px;
 }
-.ap_form .ap_basic input[name="email_address"] {
-	background: url("../img/ap_icon-email.svg") no-repeat 16px center;
-	background-size: 24px;
+.ap_form .ap_item[rel="nick_name"]:before {
+	content: "\e6ba";
 }
-.ap_form .ap_basic input[name="email_address"][required] {
-	background: url("../img/ap_icon-email.svg") no-repeat 16px center, url("../img/ap_required.svg") no-repeat top right;
-	background-size: 24px;
+.ap_form .ap_item[rel="email_address"]:before,
+.ap_form .ap_item[rel="email"]:before {
+	content: "\e6cc";
 }
-.ap_form .ap_basic input[name="phone_number"] {
-	background: url("../img/ap_icon-phone.svg") no-repeat 16px center;
-	background-size: 24px;
+.ap_form .ap_item[rel="phone_number"]:before,
+.ap_form .ap_item[rel="tel"]:before,
+.ap_form .ap_item[rel="tel_v2"]:before,
+.ap_form .ap_item[rel="tel_intl"]:before,
+.ap_form .ap_item[rel="tel_intl_v2"]:before {
+	content: "\e782";
+	top: 24px;
 }
-.ap_form .ap_basic input[name="phone_number"][required] {
-	background: url("../img/ap_icon-phone.svg") no-repeat 16px center, url("../img/ap_required.svg") no-repeat top right;
-	background-size: 24px;
+.ap_form .ap_item[rel="text"]:before {
+	content: "\e7b4";
 }
-.ap_form .ap_basic select[name="phone_country"] {
-	position: relative;
-    margin: 8px 0;
-    font-size: 14px;
-    width: 320px;
-	color: #666;
-    background: url("../img/ap_icon-globe.svg") no-repeat 16px center;
-	background-size: 24px;
+.ap_form .ap_item[rel="number"]:before {
+	content: "\e8ab";
 }
-.ap_form .ap_basic.rx_phone_country:after {
-	content: '';
-	position: absolute;
-	z-index: 1;
-	left: 290px;
-	top: 16px;
-	display: block;
-	width: 16px;
-	height: 16px;
-	background: url(widgets/ap_form/skins/default/img/ap_icon-arrow.svg) no-repeat center center;
-	pointer-events: none;
+.ap_form .ap_item[rel="homepage"]:before {
+	content: "\e600";
 }
-.ap_form .ap_basic.rx_phone_country[disabled]:after {
-	background: none;
+.ap_form .ap_item[rel="textarea"]:before {
+	content: "\e6eb";
+	top: 24px;
 }
-
-.ap_form .ap_extra .text {
-	background: url("../img/ap_icon-text.svg") no-repeat 16px center;
-	background-size: 24px;
+.ap_form .ap_item[rel="select"]:before {
+	content: "\e607";
 }
-.ap_form .ap_extra .text[required] {
-	background: url("../img/ap_icon-text.svg") no-repeat 16px center, url("../img/ap_required.svg") no-repeat top right;
-	background-size: 24px;
+.ap_form .ap_item[rel="checkbox"]:before {
+	content: "\e6e2";
+	top: 24px;
 }
-.ap_form .ap_extra[rel="homepage"] .homepage {
-	background: url("../img/ap_icon-homepage.svg") no-repeat 16px center;
-	background-size: 24px;
+.ap_form .ap_item[rel="radio"]:before {
+	content: "\e6e4";
+	top: 24px;
 }
-.ap_form .ap_extra[rel="homepage"].is_required .homepage {
-	background: url("../img/ap_icon-homepage.svg") no-repeat 16px center, url("../img/ap_required.svg") no-repeat top right;
-	background-size: 24px;
+.ap_form .ap_item[rel="date"]:before {
+	content: "\e7b0";
 }
-.ap_form .ap_extra[rel="email_address"] .email_address {
-	background: url("../img/ap_icon-email.svg") no-repeat 16px center;
-	background-size: 24px;
+.ap_form .ap_item[rel="time"]:before {
+	content: "\e790";
 }
-.ap_form .ap_extra[rel="email_address"].is_required .email_address {
-	background: url("../img/ap_icon-email.svg") no-repeat 16px center, url("../img/ap_required.svg") no-repeat top right;
-	background-size: 24px;
+.ap_form .ap_item[rel="country"]:before {
+	content: "\e7f6";
 }
-.ap_form .ap_extra[rel="tel"] {
-	background: url("../img/ap_icon-phone.svg") no-repeat 16px 14px;
-	background-size: 24px;
+.ap_form .ap_item[rel="language"]:before {
+	content: "\e6ec";
 }
-.ap_form .ap_extra[rel="tel"].is_required .tel {
-	background: url("../img/ap_required.svg") no-repeat top right;
-	background-size: 24px;
+.ap_form .ap_item[rel="timezone"]:before {
+	content: "\e7a3";
 }
-.ap_form .ap_extra[rel="textarea"] textarea {
-	background: url("../img/ap_icon-content.svg") no-repeat 16px 14px;
-	background-size: 24px;
+.ap_form .ap_item[rel="kr_zip"]:before {
+	content: "\e6d6";
+	top: 24px;
 }
-.ap_form .ap_extra[rel="textarea"].is_required textarea {
-	background: url("../img/ap_icon-content.svg") no-repeat 16px 14px, url("../img/ap_required.svg") no-repeat top right;
-	background-size: 24px;
+.ap_form .ap_item[rel="password"]:before {
+	content: "\e64b";
 }
-.ap_form .ap_extra[rel="checkbox"] ul {
-	padding-left: 60px !important;
-	background: url("../img/ap_icon-checkbox.svg") no-repeat 16px 14px;
-	background-size: 24px;
+.ap_form .ap_item[rel="file"]:before {
+	content: "\e652";
 }
-.ap_form .ap_extra[rel="checkbox"].is_required ul {
-	padding-left: 60px !important;
-	background: url("../img/ap_icon-checkbox.svg") no-repeat 16px 14px, url("../img/ap_required.svg") no-repeat top right;
-	background-size: 24px;
+.ap_form .ap_item[rel="title"]:before {
+	content: "\e7cb";
 }
-.ap_form .ap_extra[rel="select"] .select {
-	background: url("../img/ap_icon-select.svg") no-repeat 16px center;
-	background-size: 24px;
+.ap_form .ap_item[rel="category"]:before {
+	content: "\e6a5";
 }
-.ap_form .ap_extra[rel="select"].is_required .select {
-	background: url("../img/ap_icon-select.svg") no-repeat 16px center, url("../img/ap_required.svg") no-repeat top right;
-	background-size: 24px;
-}
-.ap_form .ap_extra[rel="radio"] ul {
-	padding-left: 60px !important;
-	background: url("../img/ap_icon-radio_button.svg") no-repeat 16px 14px;
-	background-size: 24px;
-}
-.ap_form .ap_extra[rel="radio"].is_required ul {
-	padding-left: 60px !important;
-	background: url("../img/ap_icon-radio_button.svg") no-repeat 16px 14px, url("../img/ap_required.svg") no-repeat top right;
-	background-size: 24px;
-}
-.ap_form .ap_extra[rel="date"] .date {
-	background: url("../img/ap_icon-date.svg") no-repeat 16px center;
-	background-size: 24px;
-}
-.ap_form .ap_extra[rel="date"].is_required .date {
-	background: url("../img/ap_icon-date.svg") no-repeat 16px center, url("../img/ap_required.svg") no-repeat top right;
-	background-size: 24px;
-}
-.ap_form .ap_extra[rel="kr_zip"] .krZip {
-	padding-left: 54px !important;
-	background: url("../img/ap_icon-krzip.svg") no-repeat 16px 14px;
-	background-size: 24px;
-}
-.ap_form .ap_extra[rel="kr_zip"].is_required .krZip {
-	padding-left: 54px !important;
-	background: url("../img/ap_icon-krzip.svg") no-repeat 16px 14px, url("../img/ap_required.svg") no-repeat top right;
-	background-size: 24px;
-}
-.ap_form .ap_extra[rel="password"] .password {
-	background: url("../img/ap_icon-hidden.svg") no-repeat 16px center;
-	background-size: 24px;
-}
-.ap_form .ap_extra[rel="password"].is_required .password {
-	background: url("../img/ap_icon-hidden.svg") no-repeat 16px center, url("../img/ap_required.svg") no-repeat top right;
-	background-size: 24px;
-}
-.ap_form .ap_extra[rel="password"] .ap_eye {
-	background: url("../img/ap_icon-eye.svg") no-repeat center center;
-	background-size: 20px;
-}
-.ap_form .ap_extra[rel="password"] .ap_eye.open {
-	background: url("../img/ap_icon-hide.svg") no-repeat center center;
-	background-size: 20px;
+.ap_form .ap_item[rel="content"]:before {
+	content: "\e604";
+	top: 24px;
 }
 
-.ap_form .ap_message input[name="title"] {
-	background: url("../img/ap_icon-title.svg") no-repeat 16px center;
-	background-size: 24px;
-}
-.ap_form .ap_message input[name="title"][required] {
-	background: url("../img/ap_icon-title.svg") no-repeat 16px center, url("../img/ap_required.svg") no-repeat top right;
-	background-size: 24px;
-}
-.ap_form .ap_message select[name="category"] {
-	background: url("../img/ap_icon-category.svg") no-repeat 16px center;
-	background-size: 24px;
-}
-.ap_form .ap_message select[name="category"][required] {
-	background: url("../img/ap_icon-category.svg") no-repeat 16px center, url("../img/ap_required.svg") no-repeat top right;
-	background-size: 24px;
-}
-.ap_form .ap_message textarea[name="message"] {
-	background: url("../img/ap_icon-content.svg") no-repeat 16px 14px;
-	background-size: 24px;
-}
-.ap_form .ap_message textarea[name="message"][required] {
-	background: url("../img/ap_icon-content.svg") no-repeat 16px 14px, url("../img/ap_required.svg") no-repeat top right;
-	background-size: 24px;
-}
-.ap_form .ap_message input[name="password"][required] {
-	background: url("../img/ap_icon-password.svg") no-repeat 16px center, url("../img/ap_required.svg") no-repeat top right;
-	background-size: 24px;
-}
 
 /* FLoating labels  */
 .js .floating-labels label {
-	position: absolute;
-	top: 12px;
-	left: 16px;
+	position: absolute; top: 50%; left: 16px; transform: translateY(-50%);
 	font-size: 16px;
 	cursor: text;
 	-webkit-transition: top 0.2s, left 0.2s, font-size 0.2s;
@@ -781,12 +732,14 @@
 .js .floating-labels .ap_item label {
 	left: 56px;
 }
+.js .floating-labels .ap_item[rel="textarea"] label,
+.js .floating-labels .ap_item[rel="content"] label {
+	display: flex; top: 16px; transform: translateY(0);
+}
 .js .floating-labels label.float {
 	/* move label out the input field */
-	font-size: 12px;
-	color: #2b3e51;
-	top: -20px;
-	left: 0 !important;
+	top: -20px !important; left: 0 !important; transform: translateY(0);
+	font-size: 12px; color: #2b3e51;
 }
 
 /* Result */
@@ -824,30 +777,18 @@
 }
 .ap_result .ap_image_wrapper {
 	position: relative;
-	display: inline-block;
-	width: 200px;
-	height: 120px;
-	overflow: hidden;
+    display: inline-block;
+    margin: 0 8px;
+    font-size: 36px;
 	vertical-align: middle;
-	background: url("../img/ap_send.gif") no-repeat center center;
-	background-size: 200px;
-}
-.ap_result .ap_image {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	width: 100%;
-	height: auto;
-	-webkit-transform: translate(-50%, -50%);
-	-moz-transform: translate(-50%, -50%);
-	-ms-transform: translate(-50%, -50%);
-	-o-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
 }
 .ap_result .ap_text_wrapper {
 	position: relative;
-	display: inline-block;
-	height: 120px;
+	display: inline-flex;
+	flex-direction: column;
+	justify-content: center;
+	margin: 0 8px;
+	height: 100px;
 	text-align: left;
 	vertical-align: middle;
 }
@@ -966,11 +907,8 @@
 .ap_result .ap_result_footer a {
 	position: relative;
 	border-bottom: 1px solid #9ab;
-	padding-right: 16px;
 	font-size: 14px;
 	font-weight: bold;
-	background: url(../img/ap_icon-forward.svg) no-repeat center right 0;
-	background-size: 13px;
 }
 
 @keyframes blink {
@@ -987,20 +925,5 @@
 	}
 	50% {
 		background-color: #ccf;
-	}
-}
-
-@media only screen and (max-width: 768px) {
-	.js .floating-labels label {
-		font-size: 14px;
-	}
-}
-@media only screen and (max-width: 540px) {
-	.ap_form .ap_basic select[name="phone_country"] {
-		width: 100%;
-	}
-	.ap_form .ap_basic.rx_phone_country:after {
-		right: 16px;
-		left: auto;
 	}
 }

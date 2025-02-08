@@ -14,9 +14,9 @@ class ap_form extends WidgetHandler
 			$args->target_mid = $target_module_info->mid;
 
 			// 분류 사용 방식에 따라 '문의 유형' 관련 변수 정리
-			$use = $args->use_category;
+			$use = isset($args->use_category) ? $args->use_category : null;
 			$print = false;
-			$srls = $args->target_category_srls;
+			$srls = isset($args->target_category_srls) ? $args->target_category_srls : 0;
 			$list = array();
 
 			if ( $use !== 'N' )
@@ -71,23 +71,11 @@ class ap_form extends WidgetHandler
 					}
 				}
 
-				// 활용가능한 분류가 0개로 확인
-				if ( !count($list) )
-				{
-					$use = 'N';
-					$srls = 0;
-					$list = null;
-				}
 				// 활용가능한 분류가 2개 이상으로 확인
 				if ( count($list) > 1 )
 				{
 					$print = true;
 				}
-			}
-			else
-			{
-				$srls = 0;
-				$list = null;
 			}
 			
 			$args->use_category = $use;
@@ -95,92 +83,91 @@ class ap_form extends WidgetHandler
 			$args->target_category_srls = $srls;
 			$args->target_category_list = $list;
 
-			if ( !$args->use_phone )
+			if ( !isset($args->use_phone) )
 			{
 				$args->use_phone = 'R';
 			}
 
-			if ( !$args->use_international )
+			if ( !isset($args->use_international) )
 			{
 				$args->use_international = 'N';
 			}
-			// 라이믹스 :: 회원정보->전화번호 변수 활용
-			if ( defined('RX_VERSION') )
+
+			// 회원정보->전화번호 변수 활용
+			$logged_info = Context::get('logged_info');
+			$num = $logged_info->phone_number ?? '';
+			$member_config = MemberModel::getMemberConfig();
+			$args->countries = '';
+
+			if ( $args->use_international === 'Y' && $member_config->phone_number_hide_country !== 'Y' )
 			{
-				$logged_info = Context::get('logged_info');
-				$num = $logged_info->phone_number;
-				$oMemberModel = getModel('member');
-				$member_config = $oMemberModel->getMemberConfig();
-
-				if ( $args->use_international === 'Y' && $member_config->phone_number_hide_country !== 'Y' )
+				$state = $logged_info->phone_country ?? '';
+				$default_country = $state;
+				if ( !$default_country && $member_config->phone_number_default_country )
 				{
-					$state = $logged_info->phone_country;
-					$default_country = $state;
-					if ( !$default_country && $member_config->phone_number_default_country )
-					{
-						$default_country = $member_config->phone_number_default_country;
-					}
-					if ( $default_country && !preg_match('/^[A-Z]{3}$/', $default_country) )
-					{
-						$default_country = Rhymix\Framework\i18n::getCountryCodeByCallingCode($default_country);
-					}
-					if ( !$default_country && Context::get('lang_type') === 'ko' )
-					{
-						$default_country = 'KOR';
-					}
+					$default_country = $member_config->phone_number_default_country;
+				}
+				if ( $default_country && !preg_match('/^[A-Z]{3}$/', $default_country) )
+				{
+					$default_country = Rhymix\Framework\i18n::getCountryCodeByCallingCode($default_country);
+				}
+				if ( !$default_country && Context::get('lang_type') === 'ko' )
+				{
+					$default_country = 'KOR';
+				}
 
-					$country_list = Rhymix\Framework\i18n::listCountries(Context::get('lang_type') === 'ko' ? Rhymix\Framework\i18n::SORT_NAME_KOREAN : Rhymix\Framework\i18n::SORT_NAME_ENGLISH);
-					$inputTag = '<select name="phone_country" id="phone_country" class="phone_country"' . ($state ? ' disabled' : '') . '>';
-					if ( $state )
-					{
-						$inputTag .= '<option value="' . $state . '">';
-						$inputTag .= escape(Context::get('lang_type') === 'ko' ? $country_list[$state]->name_korean : $country_list[$state]->name_english) . ' (+' . $country_list[$state]->calling_code . ')</option>';
-					}
-					else
-					{
-						$inputTag .= '<option value="">' . Context::getLang("international_phone_number") . '</option>';
-						foreach ( $country_list as $country )
-						{
-							if ( $country->calling_code )
-							{
-								$inputTag .= '<option value="' . $country->iso_3166_1_alpha3 . '"' . ($country->iso_3166_1_alpha3 === $default_country ? ' selected="selected"' : '') . '>';
-								$inputTag .= escape(Context::get('lang_type') === 'ko' ? $country->name_korean : $country->name_english) . ' (+' . $country->calling_code . ')</option>';
-							}
-						}
-					}
-					$inputTag .= '</select>' . "\n";
-					$args->countries = $inputTag;
-					
-					if ( $state === 'KOR' )
-					{
-						$phone_number = \Rhymix\Framework\Korea::formatPhoneNumber($num);
-					}
-					elseif ( $state === 'USA' )
-					{
-						$digits = preg_replace('/[^0-9]/', '', $num);
-						$phone_number = substr($digits, 0, 3) . '-' . substr($digits, 3, 3) . '-' . substr($digits, 6);
-					}
-					else
-					{
-						$phone_number = $num;
-					}
-
-					$args->international = true;
-					$args->default_country = $default_country;
-					$args->phone_number = $phone_number;
-					$args->calling_number = \Rhymix\Framework\i18n::formatPhoneNumber($num, $state, false);
+				$country_list = Rhymix\Framework\i18n::listCountries(Context::get('lang_type') === 'ko' ? Rhymix\Framework\i18n::SORT_NAME_KOREAN : Rhymix\Framework\i18n::SORT_NAME_ENGLISH);
+				$inputTag = '<select name="phone_country" id="phone_country" class="phone_country"' . ($state ? ' disabled' : '') . '>';
+				if ( $state )
+				{
+					$inputTag .= '<option value="' . $state . '">';
+					$inputTag .= escape(Context::get('lang_type') === 'ko' ? $country_list[$state]->name_korean : $country_list[$state]->name_english) . ' (+' . $country_list[$state]->calling_code . ')</option>';
 				}
 				else
 				{
-					$args->phone_number = $args->calling_number = $num;
+					$inputTag .= '<option value="">' . Context::getLang("international_phone_number") . '</option>';
+					foreach ( $country_list as $country )
+					{
+						if ( $country->calling_code )
+						{
+							$inputTag .= '<option value="' . $country->iso_3166_1_alpha3 . '"' . ($country->iso_3166_1_alpha3 === $default_country ? ' selected="selected"' : '') . '>';
+							$inputTag .= escape(Context::get('lang_type') === 'ko' ? $country->name_korean : $country->name_english) . ' (+' . $country->calling_code . ')</option>';
+						}
+					}
 				}
+				$inputTag .= '</select>' . "\n";
+				$args->countries = $inputTag;
+				
+				if ( $state === 'KOR' )
+				{
+					$phone_number = \Rhymix\Framework\Korea::formatPhoneNumber($num);
+				}
+				elseif ( $state === 'USA' )
+				{
+					$digits = preg_replace('/[^0-9]/', '', $num);
+					$phone_number = substr($digits, 0, 3) . '-' . substr($digits, 3, 3) . '-' . substr($digits, 6);
+				}
+				else
+				{
+					$phone_number = $num;
+				}
+
+				$args->international = true;
+				$args->default_country = $default_country;
+				$args->phone_number = $phone_number;
+				$args->calling_number = \Rhymix\Framework\i18n::formatPhoneNumber($num, $state, false);
+			}
+			else
+			{
+				$args->international = false;
+				$args->phone_number = $args->calling_number = $num;
 			}
 
 
 			// 사용자 정의 확장변수 관련 변수 정리
-			$use = $args->use_extra_keys;
+			$use = isset($args->use_extra_keys) ? $args->use_extra_keys : 'N';
 			$print = false;
-			$keys = $args->target_extra_keys;
+			$keys = isset($args->target_extra_keys) ? $args->target_extra_keys : null;
 			$list = array();
 
 			if ( $use !== 'N' )
@@ -207,12 +194,6 @@ class ap_form extends WidgetHandler
 							}
 						}
 						$list = $extra_keys;
-					}
-					else
-					{
-						$use = 'N';
-						$keys = null;
-						$list = null;
 					}
 				}
 				// 일부만 활용
@@ -241,30 +222,13 @@ class ap_form extends WidgetHandler
 						{
 							$print = true;
 						}
-						else
-						{
-							$use = 'N';
-							$keys = null;
-							$list = null;
-						}
 						if ( count($list) === count($extra_keys) )
 						{
 							$use = 'A';
 							$keys = null;
 						}
 					}
-					else
-					{
-						$use = 'N';
-						$keys = null;
-						$list = null;
-					}
 				}
-			}
-			else
-			{
-				$keys = null;
-				$list = null;
 			}
 			
 			$args->use_extra_keys = $use;
@@ -273,15 +237,15 @@ class ap_form extends WidgetHandler
 			$args->target_extra_list = $list;
 
 			// 기타 변수 정리
-			if ( !$args->use_email )
+			if ( !isset($args->use_email) )
 			{
 				$args->use_email = 'R';
 			}
-			if ( !$args->use_content )
+			if ( !isset($args->use_content) )
 			{
 				$args->use_content = 'N';
 			}
-			if ( !$args->use_password )
+			if ( !isset($args->use_password) )
 			{
 				$args->use_password = 'R';
 			}
@@ -289,7 +253,7 @@ class ap_form extends WidgetHandler
 			{
 				$args->rand_password = rand(10000, 99999);
 			}
-			if ( !$args->privacy )
+			if ( !isset($args->privacy) )
 			{
 				$args->privacy = 'N';
 			}
@@ -332,7 +296,7 @@ class ap_form extends WidgetHandler
 				$args->privacy_title_arr = $privacy_titles;
 				$args->privacy_desc_arr = $privacy_descs;
 			}
-			if ( !$args->redirect )
+			if ( !isset($args->redirect) )
 			{
 				$args->redirect = 'N';
 			}
@@ -344,32 +308,9 @@ class ap_form extends WidgetHandler
 			{
 				$args->redirect = 'N';
 			}
-			if ( !$args->use_recaptcha )
+			if ( !isset($args->use_recaptcha) )
 			{
 				$args->use_recaptcha = 'N';
-			}
-			if ( defined('RX_VERSION') && in_array($args->use_recaptcha, array('Y', 'A'))  )
-			{
-				$logged_info = Context::get('logged_info');
-				if ( $logged_info->is_admin !== 'Y' && ( ($args->use_recaptcha === 'Y' && !$logged_info->member_srl) || $args->use_recaptcha === 'A' ) )
-				{
-					$oAddonAdminModel = getAdminModel('addon');
-					$addon_info = $oAddonAdminModel->getAddonInfoXml('recaptcha')->extra_vars;
-					$recaptcha_info = new stdClass;
-					if ( !empty($addon_info) && isset($addon_info) )
-					{
-						foreach ( $addon_info as $info )
-						{
-							$recaptcha_info->{$info->name} = $info->value;
-						}
-					}
-					
-					Context::loadFile(array('./widgets/ap_form/recaptcha/recaptcha.js', 'body'));
-					Context::addHtmlFooter('<script src="https://www.google.com/recaptcha/api.js?render=explicit&amp;onload=reCaptchaCallback" async defer></script>');
-					$html = '<div id="recaptcha-config" data-sitekey="%s" data-theme="%s" data-size="%s"></div>';
-					$html = sprintf($html, escape($recaptcha_info->site_key), $recaptcha_info->theme ?: 'light', $recaptcha_info->size ?: 'normal');
-					Context::addHtmlFooter($html);
-				}
 			}
 
 			// 전체 변수 총정리
@@ -380,7 +321,7 @@ class ap_form extends WidgetHandler
 			$tpl_path = sprintf('%sskins/%s', $this->widget_path, $args->skin);
 			$tpl_file = 'form';
 
-			$oTemplate = &TemplateHandler::getInstance();
+			$oTemplate = TemplateHandler::getInstance();
 			return $oTemplate->compile($tpl_path, $tpl_file);
 		}
 		else
@@ -389,7 +330,7 @@ class ap_form extends WidgetHandler
 			$tpl_path = sprintf('%sskins/%s', $this->widget_path, $args->skin);
 			$tpl_file = 'error';
 
-			$oTemplate = &TemplateHandler::getInstance();
+			$oTemplate = TemplateHandler::getInstance();
 			return $oTemplate->compile($tpl_path, $tpl_file);
 		}
 	}
